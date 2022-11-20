@@ -4,13 +4,11 @@ HellGround Core (Wargate core) has been released as public as of Classic-TBC rel
 
 # **This is an archive and is no longer maintained. ** 
 
-##You're welcome to join us on discord.
-https://discord.com/invite/X3Kb3ad
 **~~######################################################################################~~**
 
 
 
-![214.png](https://bitbucket.org/repo/Xjqaeg/images/2184880375-214.png)
+![214.png](https://i.imgur.com/w6yhE8u.png)
 
 ######################
 #   HellGroundCore Project 2.4.3   #
@@ -29,3 +27,6 @@ Welcome!
 
 
 Copyright (C) 2008-2017 HellGround team <https://wow-hellground.com/>
+
+---
+* Thanks for Brotalnia add partybot into this core and made [repack](https://www.ownedcore.com/forums/world-of-warcraft/world-of-warcraft-emulator-servers/wow-emu-general-releases/970995-hellground-2-4-3-repack-including-optional-ptr-mall-vandors.html).

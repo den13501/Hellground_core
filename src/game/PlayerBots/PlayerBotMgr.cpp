@@ -640,7 +640,11 @@ uint8 SelectRandomRaceForClass(uint8 playerClass, Team playerTeam)
         }
         case CLASS_PALADIN:
         {
-            return urand(0, 1) ? RACE_HUMAN : RACE_DWARF;
+            if (playerTeam == ALLIANCE)
+                return urand(0, 1) ? RACE_HUMAN : RACE_DWARF;
+            else
+                return RACE_BLOODELF;
+            break;
         }
         case CLASS_HUNTER:
         {
@@ -668,7 +672,10 @@ uint8 SelectRandomRaceForClass(uint8 playerClass, Team playerTeam)
         }
         case CLASS_SHAMAN:
         {
-            return PickRandomValue(RACE_ORC, RACE_TAUREN, RACE_TROLL);
+            if (playerTeam == HORDE)
+                return PickRandomValue(RACE_ORC, RACE_TAUREN, RACE_TROLL);
+            else
+                return RACE_DRAENEI;
         }
         case CLASS_MAGE:
         {
@@ -809,40 +816,113 @@ bool ChatHandler::HandlePartyBotAddCommand(const char* args2)
         std::string option = arg1;
         if (option == "warrior")
             botClass = CLASS_WARRIOR;
-        else if (option == "paladin" && pPlayer->GetTeam() == ALLIANCE)
+        else if (option == "mwarrior")
+        {
+            botClass = CLASS_WARRIOR;
+            botRole = ROLE_MELEE_DPS;
+        }
+        else if (option == "paladin" /*&& pPlayer->GetTeam() == ALLIANCE*/)
             botClass = CLASS_PALADIN;
+        else if (option == "mpaladin")
+        {
+            botClass = CLASS_PALADIN;
+            botRole = ROLE_MELEE_DPS;
+        }
+        else if (option == "hpaladin")
+        {
+            botClass = CLASS_PALADIN;
+            botRole = ROLE_HEALER;
+        }
         else if (option == "hunter")
             botClass = CLASS_HUNTER;
         else if (option == "rogue")
             botClass = CLASS_ROGUE;
         else if (option == "priest")
             botClass = CLASS_PRIEST;
-        else if (option == "shaman" && pPlayer->GetTeam() == HORDE)
+        else if (option == "rpriest")
+        {
+            botClass = CLASS_PRIEST;
+            botRole = ROLE_RANGE_DPS;
+        }
+        else if (option == "hpriest")
+        {
+            botClass = CLASS_PRIEST;
+            botRole = ROLE_HEALER;
+        }
+        else if (option == "shaman" /*&& pPlayer->GetTeam() == HORDE*/)
             botClass = CLASS_SHAMAN;
+        else if (option == "mshaman")
+        {
+            botClass = CLASS_SHAMAN;
+            botRole = ROLE_MELEE_DPS;
+        }
+        else if (option == "rshaman")
+        {
+            botClass = CLASS_SHAMAN;
+            botRole = ROLE_RANGE_DPS;
+        }
+        else if (option == "hshaman")
+        {
+            botClass = CLASS_SHAMAN;
+            botRole = ROLE_HEALER;
+        }
         else if (option == "mage")
             botClass = CLASS_MAGE;
         else if (option == "warlock")
             botClass = CLASS_WARLOCK;
         else if (option == "druid")
             botClass = CLASS_DRUID;
+        else if (option == "mdruid")
+        {
+            botClass = CLASS_DRUID;
+            botRole = ROLE_MELEE_DPS;
+        }
+        else if (option == "rdruid")
+        {
+            botClass = CLASS_DRUID;
+            botRole = ROLE_RANGE_DPS;
+        }
+        else if (option == "hdruid")
+        {
+            botClass = CLASS_DRUID;
+            botRole = ROLE_HEALER;
+        }
         else if (option == "dps")
         {
-            botClass = PickRandomValue(CLASS_WARRIOR, CLASS_HUNTER, CLASS_ROGUE, CLASS_MAGE, CLASS_WARLOCK);
+            botClass = PickRandomValue(CLASS_WARRIOR, CLASS_HUNTER, CLASS_ROGUE, CLASS_MAGE, CLASS_WARLOCK, CLASS_PALADIN, CLASS_SHAMAN);
             botRole = CombatBotBaseAI::IsMeleeDamageClass(botClass) ? ROLE_MELEE_DPS : ROLE_RANGE_DPS;
         }
         else if (option == "healer")
         {
-            std::vector<uint32> dpsClasses = { CLASS_PRIEST, CLASS_DRUID };
+            std::vector<uint32> dpsClasses = { CLASS_PRIEST, CLASS_DRUID, CLASS_SHAMAN, CLASS_PALADIN };
+            /*
             if (pPlayer->GetTeam() == HORDE)
                 dpsClasses.push_back(CLASS_SHAMAN);
             else
                 dpsClasses.push_back(CLASS_PALADIN);
+            */
             botClass = SelectRandomContainerElement(dpsClasses);
             botRole = ROLE_HEALER;
         }
         else if (option == "tank")
         {
+            std::vector<uint32> tankClasses = { CLASS_WARRIOR, CLASS_PALADIN, CLASS_DRUID };
+            botClass = SelectRandomContainerElement(tankClasses);
+            botRole = ROLE_TANK;
+        }
+        else if (option == "wtank") //防戰
+        {
             botClass = CLASS_WARRIOR;
+            botRole = ROLE_TANK;
+        }
+        else if (option == "dtank") //熊坦
+        {
+            botClass = CLASS_DRUID;
+            botRole = ROLE_TANK;
+        }
+        else if (option == "ptank") //防騎
+        {
+            botClass = CLASS_PALADIN;
             botRole = ROLE_TANK;
         }
 

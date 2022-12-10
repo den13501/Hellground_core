@@ -1089,6 +1089,7 @@ bool ChatHandler::HandlePartyBotSetRoleCommand(const char* args)
             pAI->m_role = role;
             pAI->ResetSpellData();
             pAI->PopulateSpellData();
+            pAI->AutoEquipGear(sWorld.getConfig(CONFIG_UINT32_PARTY_BOT_AUTO_EQUIP)); //made bot auto change equipment when it assigned new role
             PSendSysMessage("%s is now a %s.", pTarget->GetName(), roleStr.c_str());
             return true;
         }

@@ -821,7 +821,7 @@ bool ChatHandler::HandlePartyBotAddCommand(const char* args2)
             botClass = CLASS_WARRIOR;
             botRole = ROLE_MELEE_DPS;
         }
-        else if (option == "paladin" /*&& pPlayer->GetTeam() == ALLIANCE*/)
+        else if (option == "paladin")
             botClass = CLASS_PALADIN;
         else if (option == "mpaladin")
         {
@@ -849,7 +849,7 @@ bool ChatHandler::HandlePartyBotAddCommand(const char* args2)
             botClass = CLASS_PRIEST;
             botRole = ROLE_HEALER;
         }
-        else if (option == "shaman" /*&& pPlayer->GetTeam() == HORDE*/)
+        else if (option == "shaman")
             botClass = CLASS_SHAMAN;
         else if (option == "mshaman")
         {
@@ -891,6 +891,16 @@ bool ChatHandler::HandlePartyBotAddCommand(const char* args2)
         {
             botClass = PickRandomValue(CLASS_WARRIOR, CLASS_HUNTER, CLASS_ROGUE, CLASS_MAGE, CLASS_WARLOCK, CLASS_PALADIN, CLASS_SHAMAN);
             botRole = CombatBotBaseAI::IsMeleeDamageClass(botClass) ? ROLE_MELEE_DPS : ROLE_RANGE_DPS;
+        }
+        else if (option == "mdps")
+        {
+            botClass = PickRandomValue(CLASS_WARRIOR, CLASS_ROGUE, CLASS_PALADIN, CLASS_SHAMAN);
+            botRole = ROLE_MELEE_DPS;
+        }
+        else if (option == "rdps")
+        {
+            botClass = PickRandomValue(CLASS_HUNTER, CLASS_MAGE, CLASS_WARLOCK, CLASS_SHAMAN);
+            botRole = ROLE_RANGE_DPS;
         }
         else if (option == "healer")
         {
@@ -1079,6 +1089,7 @@ bool ChatHandler::HandlePartyBotSetRoleCommand(const char* args)
             pAI->m_role = role;
             pAI->ResetSpellData();
             pAI->PopulateSpellData();
+            pAI->AutoEquipGear(sWorld.getConfig(CONFIG_UINT32_PARTY_BOT_AUTO_EQUIP)); //made bot auto change equipment when it assigned new role
             PSendSysMessage("%s is now a %s.", pTarget->GetName(), roleStr.c_str());
             return true;
         }
